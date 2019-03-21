@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     sadapter adapter;
     workadaper adapter2;
     private  Button selfb;
+    private Button test;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,8 +56,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void ini(){
+        test=(Button)findViewById(R.id.tttest);
         selfb=(Button)findViewById(R.id.selfcheck);
         selfb.setOnClickListener(this);
+        test.setOnClickListener(this);
     }
     private void inirv(){
         RecyclerView recyclerView2=(RecyclerView)findViewById(R.id.recycler2);
@@ -127,6 +130,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.selfcheck:
                 Intent intent = new Intent(this, information.class);
                 startActivity(intent);
+                break;
+            case R.id.tttest:
+                Intent intent1 = new Intent(this, likelist.class);
+                startActivity(intent1);
+                break;
         }
     }
 }

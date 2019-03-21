@@ -27,6 +27,7 @@ public class Mainprofess extends AppCompatActivity implements View.OnClickListen
     cmtadapter cadapter;
 String name;
     String oid;
+    String obj;
 String belong;
 String school;
 EditText e1;
@@ -42,6 +43,7 @@ TextView  t3;
         setContentView(R.layout.activity_mainprofess);
         Intent intent=getIntent();
         name=intent.getStringExtra("n");
+        obj=intent.getStringExtra("ob");
         belong=intent.getStringExtra("b");
         school=intent.getStringExtra("s");
         ini();
@@ -105,6 +107,7 @@ TextView  t3;
                     public void done(String objectId,BmobException e) {
                         if(e==null){
                             Toast.makeText(Mainprofess.this, "评论成功", Toast.LENGTH_SHORT).show();
+                            e1.getText().clear();
                         }else{
 
                         }
@@ -113,10 +116,8 @@ TextView  t3;
                 inirc();
                 break;
             case R.id.like:
-
                 user = BmobUser.getCurrentUser(User.class);
                 final String nn= user.getUsername();
-              final String fullname=school+name;
               BmobQuery<prefer> perferQuery=new BmobQuery<>();
               perferQuery.addWhereEqualTo("user",nn);
                 perferQuery.findObjects(new FindListener<prefer>() {
@@ -126,34 +127,42 @@ TextView  t3;
                             for (prefer prefer : object) {
                                oid=prefer.getObjectId();
                             }
-                            //final String fullname=school+name;
-                            prefer p=new prefer();
-                            p.addUnique("likes",fullname);
-                            p.update(oid,new UpdateListener() {
-                                @Override
-                                public void done(BmobException e) {
-                                    if(e==null){
-                                        Toast.makeText(Mainprofess.this, "收藏成功", Toast.LENGTH_SHORT).show();
-                                    }else{
-                                        Toast.makeText(Mainprofess.this, "更新失败", Toast.LENGTH_SHORT).show();
+                            if(oid==null){
+                                prefer p=new prefer();
+                                p.setUser(nn);
+                                p.addUnique("likes",obj);
+                                p.save(new SaveListener<String>() {
+                                    @Override
+                                    public void done(String objectId,BmobException e) {
+                                        if(e==null){
+                                            Toast.makeText(Mainprofess.this, "收藏成功", Toast.LENGTH_SHORT).show();
+                                            like.setEnabled(false);
+                                        }else{
+                                            Toast.makeText(Mainprofess.this, "更新失败", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
-                                }
+                                });
+                            }
+                            else{
+                                prefer p=new prefer();
+                                p.addUnique("likes",obj);
+                                p.update(oid,new UpdateListener() {
+                                    @Override
+                                    public void done(BmobException e) {
+                                        if(e==null){
+                                            Toast.makeText(Mainprofess.this, "收藏成功", Toast.LENGTH_SHORT).show();
+                                            like.setEnabled(false);
+                                        }else{
+                                            Toast.makeText(Mainprofess.this, "更新失败", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
 
-                            });
+                                });
+                            }
+                            //final String fullname=school+name;
+
                         }
-                        else {   prefer p=new prefer();
-                            p.setUser(nn);
-                            p.addUnique("likes",fullname);
-                            p.save(new SaveListener<String>() {
-                                @Override
-                                public void done(String objectId,BmobException e) {
-                                    if(e==null){
-                                        Toast.makeText(Mainprofess.this, "收藏成功", Toast.LENGTH_SHORT).show();
-                                    }else{
-                                        Toast.makeText(Mainprofess.this, "更新失败", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
+                        else {
                         }
                     }
                 });

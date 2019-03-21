@@ -66,11 +66,13 @@ public class Fragment2 extends Fragment{
                 Profess item=(Profess)adapter.getItem(position);
                 String name=item.getName();
                 String belong=item.getBelong();
+                String obj=item.getObjectId();
                 String school=item.getSchool();
                 Intent intent1 = new Intent(getActivity(), Mainprofess.class);
                 intent1.putExtra("n",name);
                 intent1.putExtra("b",belong);
                 intent1.putExtra("s",school);
+                intent1.putExtra("ob",obj);
                 startActivity(intent1);
             }
         });

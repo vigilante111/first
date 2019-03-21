@@ -1,10 +1,12 @@
 package cn.inscu.bishe;
 
+import cn.bmob.v3.BmobObject;
+
 /**
  * Created by apple on 2019/2/18.
  */
 
-public class Profess {
+public class Profess extends BmobObject {
     private String name;
     private String school;
     private String belong;
